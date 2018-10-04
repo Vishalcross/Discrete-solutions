@@ -1,3 +1,7 @@
+/* This question is identical to the ever popular dynamic programming question, the coin change problem
+@author
+Vishal Chokala
+*/
 #include<stdio.h>
 int main(){
     int e,m,i,j,x,y;
