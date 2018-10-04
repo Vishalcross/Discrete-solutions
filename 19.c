@@ -14,7 +14,7 @@ int main(){
     }
     if(o==z)
     printf("\nNice");
-    else printf("\nBad");
+    else printf("\nBad    ");
     return 0;
 
 }
