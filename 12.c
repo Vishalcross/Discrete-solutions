@@ -1,39 +1,62 @@
+/* The objective of this porgram is to create a divisor lattice for a given input
+@authors Vishal Chokala
+Code optimized by tanmay Kulkarni
+*/
 #include<stdio.h>
+#include<string.h>
+#define MAX 1000
+
 int main(){
-	int i,j,k,n;
-	scanf("%d",&n);
-	int factors[100],size=0,count=0;
-	for(i=1;i<=n;i++){
-		if(n%i==0) factors[size++] = i;
+	int num;
+	printf("Enter the number\n");
+	scanf("%d",&num);
+	if(num<0){
+		printf("invalid input\n");
+		return 0;
 	}
-	int a[size][size];
-	for(i=0;i<size;i++){
-		for(j=0;j<size;j++){
-			a[i][j] = 0;
+	int factors[MAX];
+	int size=0;
+
+	for(int i=1;i<=num;i++){
+		if(num%i==0){
+			factors[size++]=i;
 		}
 	}
-	for(i=0;i<size;i++){
-		for(j=0;j<size;j++){
-			int x=factors[i],y=factors[j];
-			if(y%x==0 && y!=x) a[i][j] = 1;
+	
+	int divides[size][size];
+	memset(divides,0,sizeof(divides));
+	
+	for(int i=0;i<size;i++){
+		for(int j=0;j<=i;j++){
+			if(i!=j && factors[i]%factors[j]==0){
+				divides[i][j]=1; //i is divided by j
+			}
 		}
 	}
-	for(i=size-1;i>=0;i--){
-		for(j=0;j<size;j++){
-			if(a[i][j]==1){
-				for(k=0;k<size;k++){
-					if(a[k][i]==1 && a[k][j]==1){
-						a[k][j] = 0;
+	
+	//Removing all the intermediate connections
+	for(int i=size-1;i>=0;i--){
+		for(int j=0;j<size;j++){
+			if(divides[i][j]==1){
+				for(int k=j;k<=i;k++){
+					if(divides[i][k]==1 && divides[k][j]==1){
+						divides[i][j]=0;
+						break;
 					}
 				}
 			}
 		}
 	}
-	for(i=0;i<size;i++){
-		for(j=0;j<size;j++){
-			if(a[i][j]==1) count++;
+	
+	int count=0;
+	for(int i=0;i<size;i++){
+		for(int j=0;j<size;j++){
+			if(divides[i][j]==1){
+				count++;
+			}
 		}
 	}
-	printf("%d",count);
+	
+	printf("The answer is %d\n",count);
 	return 0;
 }
